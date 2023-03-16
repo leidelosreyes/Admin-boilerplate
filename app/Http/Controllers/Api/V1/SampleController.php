@@ -55,7 +55,7 @@ class SampleController extends Controller
         return response()->json([
             'success' => true,
             'status_code' => JsonResponse::HTTP_OK,
-            'message'=> $request->all()
+            'data'=> $request->all()
         ],JsonResponse::HTTP_OK
         );
 

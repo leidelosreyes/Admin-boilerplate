@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\SampleController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::prefix('v1')->group(function(){
+    Route::post('/sample', [SampleController::class, 'store']);
+});
 
-Route::post('/sample', [SampleController::class, 'store']);
-Route::get('/index', [SampleController::class, 'index']);
