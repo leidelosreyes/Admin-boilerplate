@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse as HttpFoundationJsonResponse;
 
 class SampleController extends Controller
 {
@@ -15,7 +18,6 @@ class SampleController extends Controller
     public function index()
     {
         //
-        return response()->json(['message' => 'Apaka Gwapo mo heheheehe']);
     }
 
     /**
@@ -36,13 +38,27 @@ class SampleController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // $sample = new Sample;
-        // $sample->title = $request->title;
-        // $sample->description = $request->descriptiom;
-        // $sample->save();
+        $validator = Validator::make($request->all(),[
+            'title' =>'required',
+            'detail' => 'required'
+        ]);
+        // failed request
+        if($validator->fails()){
+            return response()->json([
+                 'success' => false,
+                 'status_code' => JsonResponse::HTTP_NOT_ACCEPTABLE,
+                 'errors' => $validator->errors(),
+            ],JsonResponse::HTTP_NOT_ACCEPTABLE
+        );
+        }
+        // success request
+        return response()->json([
+            'success' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'message'=> $request->all()
+        ],JsonResponse::HTTP_OK
+        );
 
-        return response()->json(['message' => 'sample created successfully']);
     }
 
     /**
